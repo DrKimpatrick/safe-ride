@@ -1,9 +1,11 @@
 import os
-from flask_restplus import Resource
+from flask import request
+from flask_restplus import Resource, reqparse
+import re
 
-class Environment(Resource):
-    """ Class doc string """
+class Auth(Resource):
+    """ User signup and login """
 
-    def get(self):
-        """ Method doc string """
-        return {'Environment': '{}'.format(os.environ['APP_SETTINGS'])}
+    def post(self):
+        """ signup """      
+        return {"return": "return"}
