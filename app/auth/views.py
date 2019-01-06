@@ -36,69 +36,12 @@ class Auth(Resource):
 
         response = ''
 
-        # if text_1 == "":
-        #     # This is the first request. Note how we start the response with CON
-        #     # response = "CON What would you want to check \n " \
-        #     #     " 1. My Account \n" \
-        #     #     " 2. My phone number \n" \
-        #     #     "3. {}".format(full_response) 
-        #     # response = "END " + text_string
-
-        #     response = "Save more and get an instant \n" \
-        #             " loan of up to 2M UGX on \n Centemobile" \
-        #             "Select Options: \n" \
-        #             "1. Centemobile \n" \
-        #             "2. Agent Banking"
-
         def check_phone():
             for data in personal_info:
                 if data['mobile_phone'] == str(phone_number):
                     return {"pin": data['pin'], "name": data['name'], "balance": data['balance']}
             else:
                 return False
-
-        # def get_info():
-        #     for data in personal_info:
-        #         if data['mobile_phone'] == str(phone_number):
-        #             return True
-        #     else:
-        #         return False
-        #     return {"pin": "pin", "name": "name"}
-
-        # elif text_1 == '1':
-        #     # Business logic for first level response
-        #     # response = "CON Choose account information you want to view \n" \
-        #     #     "1. Account number \n" \
-        #     #     "2. Account balance \n " \
-        #     #     "3. {}".format(full_response) 
-
-        #     # response = "END first " + text_string
-
-        # elif text_1 == '2':
-        #     # Business logic for first level response
-        #     # This is a terminal request. Note how we start the response with END
-        #     # response = "END Your phone number is 0750461002"
-        #     response = "END second " + text_string 
-
-        # elif text_1 == '1*1':
-        #     # This is a second level response where the user selected 1 in the first instance
-        #     account_number = "ACC1001"
-
-        #     # This is a terminal request. Note how we start the response with END
-        #     response = "END Your account number is {} Params: {}".format(account_number, full_response)
-
-        # elif text_1 == '1*2':
-        #     # This is a second level response where the user selected 1 in the first instance
-        #     balance = "KES 10,000"
-
-        #     # This is a terminal request. Note how we start the response with END
-        #     response = "END Your balance is {} Params: {}".format(balance, full_response)
-
-        # # return {'My_text': final}
-        # # header('Content-type: text/plain')
-        # if response:
-        #     return respond(response)
-        # return respond('END text  {}'.format(text))
 
         if text_1 == '':
             
