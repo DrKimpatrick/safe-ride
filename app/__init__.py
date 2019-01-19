@@ -23,7 +23,7 @@ def create_app(config_name):
     db.init_app(app)
     login_manager.init_app(app)
 
-    from .api_1_0 import api_bp as api_1_0_blueprint
+    from .api_1_0 import API_BP as api_1_0_blueprint
     app.register_blueprint(api_1_0_blueprint, url_prefix='/api/v1')
 
     return app
