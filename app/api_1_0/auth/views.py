@@ -1,8 +1,10 @@
 from flask import request, jsonify
+import requests
 from app import db
 from ...models import User, Login as UserLoign
 from ...api_1_0 import API_BP
 from .utils import is_str_empty, check_auth
+from ..send_email import send_email
 
 
 @API_BP.route('/auth/signup', methods=['POST'])
@@ -48,6 +50,11 @@ def register():
 
     db.session.add(user_login)
     db.session.commit()
+
+    # After successfull signup
+    # Send verication email
+    send_email(email)
+
     return jsonify({
         'token': token,
         'email': new_user.email,
