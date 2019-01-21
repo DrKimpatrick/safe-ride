@@ -13,7 +13,7 @@ def register():
 
     errors = {}
     signup = 'signup'
-    
+
     # This populates the error dict if any field is missing
     check_auth(errors, signup)
 
@@ -30,6 +30,7 @@ def register():
     data = request.json['credentials']
     email = data['email']
     password = data['password']
+    callback_url = data['callback_url']
 
     user = User.query.filter_by(email=email).first()
     if user:
@@ -45,20 +46,17 @@ def register():
 
     # First save the user before generating token
     token = new_user.generate_auth_token(10000)
-    ip = request.remote_addr
-    user_login = UserLoign(user_id=new_user.id, ip_address=ip)
 
-    db.session.add(user_login)
-    db.session.commit()
+    # Don't auto manatically login the user
+    # User should first verify their account to login
 
     # After successfull signup
     # Send verication email
-    send_email(email)
+    send_email(email, token, callback_url)
 
     return jsonify({
-        'token': token,
-        'email': new_user.email,
-        'id':  new_user.id
+        'message': 'You are successfully signed up to Safe-ride \n'\
+        'A verification link has been sent by mail, click it to verify you account'
     }), 201
 
 

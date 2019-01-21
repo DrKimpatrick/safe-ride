@@ -1,9 +1,10 @@
 import sendgrid
 import os
 from sendgrid.helpers.mail import *
+from wx.lib.itemspicker import callback
 
 
-def send_email(to_email):
+def send_email(to_email, token, callback_url):
     """ Sending emails with sendgrid """
 
     sg = sendgrid.SendGridAPIClient(apikey=os.environ.get('SENDGRID_API_KEY'))
@@ -12,7 +13,8 @@ def send_email(to_email):
     subject = "Email verification"
     body = 'Safe-ride account activation. \n' \
             'Hey there, Thank you for expressing interest in Authors Haven. \n' \
-            'Follow the link to activate your account'
+            'Follow the link to activate your account \n' \
+            '{}/{}'.format(callback_url, token)
 
     content = Content("text/plain", body)
     mail = Mail(from_email, subject, to_email, content)

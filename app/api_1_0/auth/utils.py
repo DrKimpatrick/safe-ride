@@ -60,3 +60,11 @@ def check_auth(errors, action):
                 errors['password'] = pass_validation(password, action)
         else:
             errors['password'] = 'Password field is required'
+
+        if 'callback_url' not in data:
+            errors['callback_url'] = 'Callback url field is required'
+        else:
+            callback_url = data['callback_url']
+            if is_str_empty(callback_url):
+                errors['callback_url'] = 'This field is required'
+            
