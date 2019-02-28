@@ -5,6 +5,7 @@ from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
 import os
 from config import CONFIG
+from flask_cors import CORS
 
 db = SQLAlchemy()
 
@@ -18,6 +19,7 @@ def create_app(config_name):
         : plus blueprints
     """
     app = Flask(__name__)
+    CORS(app)
     app.config.from_object(CONFIG[config_name])
     
     db.init_app(app)
