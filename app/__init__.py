@@ -1,9 +1,9 @@
 """ Import everything from the blueprints """
-
+import os
 from flask import Flask
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
-import os
+from flask_cors import CORS
 from config import CONFIG
 
 db = SQLAlchemy()
@@ -18,6 +18,7 @@ def create_app(config_name):
         : plus blueprints
     """
     app = Flask(__name__)
+    CORS(app, resources={r"/api/*": {"origins": "*"}})
     app.config.from_object(CONFIG[config_name])
     
     db.init_app(app)
