@@ -10,7 +10,7 @@ def is_str_empty(param):
 def email_validation(email):
     """ Checks for validity of user email 
         valid email: example@gmail.com
-    """ 
+    """
     if not re.match(r"([\w\.-]+)@([\w\.-]+)(\.[\w\.]+$)", email):
         return 'Enter a valid email address.'
 
@@ -21,7 +21,8 @@ def pass_validation(password, action):
         at least 8 characters long
     """
     if action == 'signup':
-        if str(password).isdigit() or len(password) < 8:
+        if (not re.match(r'\S*(\S*([a-zA-Z]\S*[0-9])|([0-9]\S*[a-zA-Z]))\S*', password) or
+                len(password) < 8):
             return "Password should be alphanumeric with at least 8 characters"
 
 
