@@ -3,3 +3,12 @@
 #### SAFE-RIDE
 
 API Documentation can be found here https://documenter.getpostman.com/view/4637800/RzteSXf7
+
+
+To run the tests and coverage, from the root folder, type:
+  
+        py.test --cov-report term --cov=app/
+            -OR-
+        - coverage run --source=app/ -m pytest
+        - coverage report -m
+

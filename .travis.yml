@@ -8,6 +8,7 @@ env:
   global:
     - APP_SETTINGS="testing"
     - DATABASE_URL='postgresql://postgres:Kp15712Kp@localhost/test_db'
+    - export SENDGRID_API_KEY='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'
 
 install:
     - pip install -r requirements.txt

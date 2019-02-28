@@ -1,8 +1,12 @@
 from flask import request, jsonify
+import requests
 from app import db
 from ...models import User, Login as UserLoign
 from ...api_1_0 import API_BP
 from .utils import is_str_empty, check_auth
+from ..send_email import send_email
+from flask import g
+from ...common_utils import authenticate
 
 
 @API_BP.route('/auth/signup', methods=['POST'])
@@ -11,7 +15,7 @@ def register():
 
     errors = {}
     signup = 'signup'
-    
+
     # This populates the error dict if any field is missing
     check_auth(errors, signup)
 
@@ -28,6 +32,7 @@ def register():
     data = request.json['credentials']
     email = data['email']
     password = data['password']
+    callback_url = data['callback_url']
 
     user = User.query.filter_by(email=email).first()
     if user:
@@ -43,16 +48,44 @@ def register():
 
     # First save the user before generating token
     token = new_user.generate_auth_token(10000)
-    ip = request.remote_addr
-    user_login = UserLoign(user_id=new_user.id, ip_address=ip)
 
+    # Don't auto manatically login the user
+    # User should first verify their account to login
+
+    # After successfull signup
+    # Send verication email
+    send_email(email, token, callback_url)
+
+    return jsonify({
+        'message': 'You are successfully signed up to Safe-ride \n'
+        'A verification link has been sent by mail, click it to verify you account'
+    }), 201
+
+
+@API_BP.route('/verify/email', methods=['POST'])
+@authenticate
+def verify_email():
+    user = g.current_user
+    user = User.query.filter_by(id=user.id).first()
+
+    user.is_email_verified = True
+
+    db.session.add(user)
+    db.session.commit()
+
+    # Lets now login the user
+    token = user.generate_auth_token(10000)
+    ip = request.remote_addr
+    user_login = UserLoign(user_id=user.id, ip_address=ip)
     db.session.add(user_login)
     db.session.commit()
+
     return jsonify({
+        'message': 'You have successfully verified your email',
         'token': token,
-        'email': new_user.email,
-        'id':  new_user.id
-    }), 201
+        'email': user.email,
+        'id':  user.id
+    }), 200
 
 
 @API_BP.route('/auth/login', methods=['POST'])
